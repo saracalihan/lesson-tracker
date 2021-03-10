@@ -2,7 +2,7 @@
   <div class="box">
     <div id="main" class="lesson">
       <div id="texts">
-        <span id="header">{{ msg.name }}</span>
+        <span id="header">{{ msg.title }}</span>
         <p v-if="isStart" id="time">
           {{ thisLessonRemainingTime }}
         </p>
@@ -35,8 +35,8 @@ export default {
     },
     setLessonTime: function () {
       var time = new Date();
-      var hour = (this.msg.startAt.getHours() - time.getHours()) * -1;
-      var minute = this.msg.startAt.getMinutes() - time.getMinutes();
+      var hour = (this.msg.start.hour() - time.getHours()) * -1;
+      var minute = this.msg.start.minute() - time.getMinutes();
 
       hour = hour < 0 ? hour : 24 - hour;
       if (minute < 0) {
@@ -65,8 +65,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.box {
-}
 .lesson {
   width: 300px;
   height: 80px;

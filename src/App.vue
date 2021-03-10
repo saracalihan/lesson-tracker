@@ -4,7 +4,10 @@
       <div class="col">
         <div class="row box">
           <div class="col">
-            <box :msg="lessons[0]" :isStart="currentLesson.isStart" />
+            <box
+              :msg="lessons[currentLesson.index]"
+              :isStart="currentLesson.isStart"
+            />
           </div>
         </div>
         <div class="row">
@@ -13,13 +16,21 @@
               <div class="col">
                 <currentLessonInfo
                   :header="`Başlangıç`"
-                  :content="currentLesson.startAt"
+                  :content="`${lessons[currentLesson.index].start.hour()}:${
+                    lessons[currentLesson.index].start.minute() == 0
+                      ? '00'
+                      : lessons[currentLesson.index].start.minute()
+                  }`"
                 />
               </div>
               <div class="col">
                 <currentLessonInfo
                   :header="`Bitiş`"
-                  :content="currentLesson.finishAt"
+                  :content="`${lessons[currentLesson.index].end.hour()}:${
+                    lessons[currentLesson.index].end.minute() == 0
+                      ? '00'
+                      : lessons[currentLesson.index].end.minute()
+                  }`"
                 />
               </div>
               <div class="col">
@@ -36,8 +47,8 @@
               </div>
               <div class="col">
                 <currentLessonInfo
-                  :header="`Mekan`"
-                  :content="'linknknkasndkasdn'"
+                  :header="`mekan`"
+                  :content="lessons[currentLesson.index].url"
                 />
               </div>
               <div class="col">
@@ -56,20 +67,17 @@
       <div class="col">
         <nextLessonInfo
           :header="`Sonraki Ders Adı`"
-          :content="lessons[1].name"
+          :content="lessons[1].title"
         />
       </div>
       <div class="col">
         <nextLessonInfo
           :header="`Başlangıç Saati`"
-          :content="lessons[1].startAt"
+          :content="lessons[1].start"
         />
       </div>
       <div class="col">
-        <nextLessonInfo
-          :header="`Bitiş Saati`"
-          :content="lessons[1].finishAt"
-        />
+        <nextLessonInfo :header="`Bitiş Saati`" :content="lessons[1].end" />
       </div>
     </div>
   </div>
@@ -80,6 +88,8 @@ import box from "./components/box.vue";
 import nextLessonInfo from "./components/nextLessonInfo.vue";
 import currentLessonInfo from "./components/currentLessonInfo.vue";
 import "bootstrap";
+var moment = require("moment");
+moment().format();
 
 export default {
   name: "App",
@@ -91,9 +101,7 @@ export default {
   data: function () {
     return {
       currentLesson: {
-        name: "name",
-        startAt: 10,
-        finishAt: 30,
+        index: 0,
         totalTime: 20,
         isStart: !false,
         remainingTime: 10,
@@ -108,72 +116,77 @@ export default {
 
       lessons: [
         {
-          name: "Ders1",
-          startAt: new Date(2020, 9, 7, 9, 0),
-          finishAt: new Date(2020, 9, 7, 11, 10),
+          title: "EDL",
+          start: moment(1601906400000),
+          end: moment(1601913600000),
+          url: "/tr/Ders/Detay/628883",
+          mekan: "İNTERNET",
         },
         {
-          name: "Ders2",
-          startAt: new Date(2020, 9, 7, 11, 0),
-          finishAt: new Date(2020, 9, 7, 12, 10),
+          title: "VERİTABANI YÖNETİM SİSTEMLERİ",
+          start: moment(1601917200000),
+          end: moment(1601928000000),
+          url: "/tr/Ders/Detay/628880",
+          mekan: "İNTERNET",
         },
-        // {
-        //   name: "Veri Iletişimi",
-        //   startAt: new Date(2020, 9, 6, 20, 0),
-        //   finishAt: new Date(2020, 9, 6, 22, 10),
-        // },
-        // {
-        //   name: "Işaretler",
-        //   startAt: new Date(2020, 9, 7, 0, 0),
-        //   finishAt: new Date(2020, 9, 7, 3, 0),
-        // },
-        // {
-        //   name: "Nesnelerin Interneti",
-        //   startAt: new Date(2020, 9, 9, 9, 0),
-        //   finishAt: new Date(2020, 9, 9, 12, 0),
-        // },
-        // {
-        //   name: "Elektronik Devre ve Lab",
-        //   startAt: new Date(2020, 9, 5, 17, 0),
-        //   finishAt: new Date(2020, 9, 5, 19, 0),
-        // },
-        // {
-        //   name: "Veritabanı Yönetimi",
-        //   startAt: new Date(2020, 9, 5, 20, 0),
-        //   finishAt: new Date(2020, 9, 5, 23, 0),
-        // },
-        // {
-        //   name: "Sayısal Analiz",
-        //   startAt: new Date(2020, 9, 6, 17, 0),
-        //   finishAt: new Date(2020, 9, 6, 20, 0),
-        // },
-        // {
-        //   name: "Elektronik Devre ve Lab",
-        //   startAt: new Date(2020, 9, 6, 20, 0),
-        //   finishAt: new Date(2020, 9, 6, 22, 0),
-        // },
-        // {
-        //   name: "Veri Yapıları",
-        //   startAt: new Date(2020, 9, 7, 17, 0),
-        //   finishAt: new Date(2020, 9, 7, 20, 0),
-        // },
-        // {
-        //   name: "Mantık Devreleri",
-        //   startAt: new Date(2020, 9, 8, 17, 0),
-        //   finishAt: new Date(2020, 9, 8, 19, 0),
-        // },
-        // {
-        //   name: "Atatürk Ilke ve Inkılap Tarihi",
-        //   startAt: new Date(2020, 9, 8, 20, 0),
-        //   finishAt: new Date(2020, 9, 8, 0, 0),
-        // },
-        // {
-        //   name: "Mantık Devreleri",
-        //   startAt: new Date(2020, 9, 4, 1, 25),
-        //   finishAt: new Date(2020, 9, 4, 2, 0),
-        // },
+        {
+          title: "VERİ İLETİŞİMİ",
+          start: moment(1601964000000),
+          end: moment(1601974800000),
+          url: "/tr/Ders/Detay/628899",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "SAYISAL ANALİZ",
+          start: moment(1601992800000),
+          end: moment(1602003600000),
+          url: "/tr/Ders/Detay/628892",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "ELEKTRONİK DEVRELER VE LABORATUVARI",
+          start: moment(1602003600000),
+          end: moment(1602010800000),
+          url: "/tr/Ders/Detay/628883",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "İŞARETLER VE SİSTEMLER",
+          start: moment(1602050400000),
+          end: moment(1602061200000),
+          url: "/tr/Ders/Detay/628910",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "VERİ YAPILARI",
+          start: moment(1602079200000),
+          end: moment(1602090000000),
+          url: "/tr/Ders/Detay/628870",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "MANTIK DEVRELERİ",
+          start: moment(1602165600000),
+          end: moment(1602172800000),
+          url: "/tr/Ders/Detay/628866",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "NESNELERİN İNTERNETİ VE UYGULAMALARI",
+          start: moment(1602223200000),
+          end: moment(1602234000000),
+          url: "/tr/Ders/Detay/628925",
+          mekan: "İNTERNET",
+        },
+        {
+          title: "MANTIK DEVRELERİ",
+          start: moment(1602252000000),
+          end: moment(1602259200000),
+          url: "/tr/Ders/Detay/628866",
+          mekan: "İNTERNET",
+        },
       ],
-      now: new Date(),
+      now: moment(),
     };
   },
   methods: {
@@ -189,23 +202,26 @@ export default {
       }
     },
     setCurrentLesson: function () {
-      var now = new Date();
-      var today = [];
-      var started = [];
-      this.lessons.forEach((lesson) => {
-        var diff = lesson.startAt.getDay() - now.getDay();
-        if (diff === 0) {
-          today.push(lesson);
+      var now = moment();
+      var enYakin = this.lessons[0];
+      this.lessons.forEach((l) => {
+        if (l.start.isSameOrAfter(now)) {
+          if (l.hour() - now.hour() >= 0) {
+            if (enYakin.hour() > l.hour) {
+              enYakin = l;
+            } else if (enYakin.hour() == l.hour()) {
+              if (enYakin.minute() > l.minute()) {
+                enYakin = l;
+              }
+            }
+          }
         }
       });
-      today.forEach((l) => {
-        if (now.getTime() - l.startAt.getTime() < 0) {
-          //ders başladı veya kaçırdım
-          started.push(l);
-        }
-      });
-      this.currentLesson.isStart = started.length === 0 ? false : true;
-      console.log(started.length);
+
+      this.currentLesson.index = this.lessons.indexOf(enYakin)
+      this.currentLesson.totalTime = 30;
+      this.currentLesson.isStart = true;
+      this.currentLesson.remainingTime = 21;
     },
     set: function () {
       this.currentLesson.isStart = true; //!this.currentLesson.isStart;
